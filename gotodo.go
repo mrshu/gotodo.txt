@@ -35,7 +35,7 @@ Options:
                 fmt.Println(tasks.Count())
         } else {
                 for i, task := range tasks {
-                        fmt.Println(i, task.Text())
+                        fmt.Println(i, task.RawText())
                 }
         }
 
