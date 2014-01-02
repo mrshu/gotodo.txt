@@ -30,6 +30,7 @@ Options:
         //fmt.Println(arguments)
 
         tasks := todotxt.LoadTaskList("todo.txt")
+        tasks.Sort()
 
         if (arguments["--num-tasks"].(bool)) {
                 fmt.Println(tasks.Len())
