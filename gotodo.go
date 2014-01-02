@@ -32,13 +32,13 @@ Options:
         tasks := todotxt.LoadTaskList("todo.txt")
 
         if (arguments["--num-tasks"].(bool)) {
-                fmt.Println(tasks.Count())
+                fmt.Println(tasks.Len())
         } else {
                 for i, task := range tasks {
                         fmt.Println(i, task.RawText())
                 }
         }
 
-       //fmt.Println(tasks)
+        //fmt.Println(tasks)
         //fmt.Println(tasks.Count())
 }
