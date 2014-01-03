@@ -36,20 +36,13 @@ Options:
                 fmt.Println(tasks.Len())
         } else {
 
+                var by string
                 if arguments["--sort"] == nil {
-                        tasks.Sort()
+                        by = "prio"
                 } else {
-                        switch arguments["--sort"].(string) {
-                        case "prio":
-                                tasks.Sort()
-                        case "date":
-                                tasks.SortByCreateDate()
-                        case "len":
-                                tasks.SortByLength()
-                        default:
-                                tasks.Sort()
-                        }
+                        by = arguments["--sort"].(string)
                 }
+                tasks.Sort(by)
 
                 for _, task := range tasks {
                         fmt.Println(task.Id(), task.RawText())
