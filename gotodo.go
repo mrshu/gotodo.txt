@@ -51,8 +51,8 @@ Options:
                         }
                 }
 
-                for i, task := range tasks {
-                        fmt.Println(i, task.RawText())
+                for _, task := range tasks {
+                        fmt.Println(task.Id(), task.RawText())
                 }
         }
 
