@@ -12,8 +12,8 @@ func main() {
         usage := `Go Todo.txt
 
 Usage:
-    gotodo
-    gotodo list
+    gotodo [--sort=<prio|date>]
+    gotodo list [--sort=<prio|date>]
     gotodo add <task>
     gotodo (finish|done) <id>
     gotodo --num-tasks
@@ -30,11 +30,18 @@ Options:
         //fmt.Println(arguments)
 
         tasks := todotxt.LoadTaskList("todo.txt")
-        tasks.Sort()
+
 
         if (arguments["--num-tasks"].(bool)) {
                 fmt.Println(tasks.Len())
         } else {
+
+                if arguments["--sort"] == nil || arguments["--sort"] == "prio" {
+                        tasks.Sort()
+                } else {
+                        tasks.SortByCreateDate()
+                }
+
                 for i, task := range tasks {
                         fmt.Println(i, task.RawText())
                 }
