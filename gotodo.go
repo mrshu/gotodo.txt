@@ -12,8 +12,8 @@ func main() {
         usage := `Go Todo.txt
 
 Usage:
-    gotodo [--sort=<prio|date>]
-    gotodo list [--sort=<prio|date>]
+    gotodo [--sort=<prio|date|len>]
+    gotodo list [--sort=<prio|date|len>]
     gotodo add <task>
     gotodo (finish|done) <id>
     gotodo --num-tasks
@@ -46,6 +46,8 @@ Options:
                                 tasks.SortByCreateDate()
                         case "len":
                                 tasks.SortByLength()
+                        default:
+                                tasks.Sort()
                         }
                 }
 
