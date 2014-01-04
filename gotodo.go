@@ -12,8 +12,8 @@ func main() {
         usage := `Go Todo.txt
 
 Usage:
-    gotodo [--sort=<prio|date|len|prio-rev|date-rev|len-rev>]
-    gotodo list [--sort=<prio|date|len|prio-rev|date-rev|len-rev>]
+    gotodo [--sort=<prio|date|len|prio-rev|date-rev|len-rev|id>]
+    gotodo list [--sort=<prio|date|len|prio-rev|date-rev|len-rev|id>]
     gotodo add <task>
     gotodo (finish|done) <id>
     gotodo --num-tasks
