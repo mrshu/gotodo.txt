@@ -13,7 +13,7 @@ func main() {
 
 Usage:
     gotodo [--sort=<prio|date|len|prio-rev|date-rev|len-rev|id>]
-    gotodo list [--sort=<prio|date|len|prio-rev|date-rev|len-rev|id>]
+    gotodo list [--sort=<prio|date|len|prio-rev|date-rev|len-rev|id>] [<keyword>]
     gotodo add <task>
     gotodo (finish|done) <id>
     gotodo --num-tasks
@@ -45,7 +45,9 @@ Options:
                 tasks.Sort(by)
 
                 for _, task := range tasks {
-                        fmt.Println(task.Id(), task.RawText())
+                        if !task.Finished() {
+                                fmt.Println(task.Id(), task.RawText())
+                        }
                 }
         }
 
