@@ -23,7 +23,8 @@ Usage:
 Options:
     -h --help     Show this screen.
     -v --version  Show version.
-    --num-tasks   Show number of tasks.`
+    --num-tasks   Show number of tasks.
+    -f --finished Show the finished tasks.`
 
         arguments, _ := docopt.Parse(usage, nil, true, "Go Todo.txt 0.1", false)
 
