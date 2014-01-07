@@ -18,6 +18,7 @@ func main() {
         var numtasks bool
         var sortby string
         var finished bool
+        var prettyformat string
 
         var cmdList = &cobra.Command{
             Use:   "list [keyword]",
@@ -35,7 +36,7 @@ func main() {
                     for _, task := range tasks {
                         if (!task.Finished() && !finished) ||
                            (task.Finished() && finished) {
-                           fmt.Println(task.Id(), task.RawText())
+                           task.PrettyPrint(prettyformat)
                         }
                     }
                 }
@@ -47,6 +48,8 @@ func main() {
                                  "Show finished tasks")
         cmdList.Flags().StringVarP(&sortby, "sort", "s", "prio",
                                    "Sort tasks by parameter (prio|date|len|prio-rev|date-rev|len-rev|id)")
+        cmdList.Flags().StringVarP(&prettyformat, "pretty", "", "%i %T",
+                                   "Pretty print tasks")
 
 //              usage := `Go Todo.txt
 
