@@ -36,7 +36,7 @@ func main() {
                     for _, task := range tasks {
                         if (!task.Finished() && !finished) ||
                            (task.Finished() && finished) {
-                           task.PrettyPrint(prettyformat)
+                           fmt.Println(task.PrettyPrint(prettyformat))
                         }
                     }
                 }
