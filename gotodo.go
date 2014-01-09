@@ -9,12 +9,6 @@ import  (
 
 func main() {
 
-        var GotodoCmd = &cobra.Command{
-            Use:   "gotodo",
-            Short: "Gotodo is a go implementation of todo.txt.",
-            Long: `A small, fast and fun implementation of todo.txt`,
-        }
-
         var numtasks bool
         var sortby string
         var finished bool
@@ -50,6 +44,16 @@ func main() {
                                    "Sort tasks by parameter (prio|date|len|prio-rev|date-rev|len-rev|id)")
         cmdList.Flags().StringVarP(&prettyformat, "pretty", "", "%i %T",
                                    "Pretty print tasks")
+
+        var GotodoCmd = &cobra.Command{
+            Use:   "gotodo",
+            Short: "Gotodo is a go implementation of todo.txt.",
+            Long: `A small, fast and fun implementation of todo.txt`,
+            Run: func(cmd *cobra.Command, args []string) {
+                cmdList.Run(cmd, nil)
+            },
+        }
+
 
 //              usage := `Go Todo.txt
 
