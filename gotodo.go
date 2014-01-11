@@ -28,11 +28,17 @@ func main() {
                 } else {
                     tasks.Sort(sortby)
 
+                    var filteredTasks todotxt.TaskList
                     for _, task := range tasks {
                         if (!task.Finished() && !finished) ||
                            (task.Finished() && finished) {
-                           fmt.Println(task.PrettyPrint(prettyformat))
+                           filteredTasks = append(filteredTasks, task)
                         }
+                    }
+
+                    for _, task := range filteredTasks {
+                            task.SetIdPaddingBy(filteredTasks)
+                            fmt.Println(task.PrettyPrint(prettyformat))
                     }
                 }
             },
