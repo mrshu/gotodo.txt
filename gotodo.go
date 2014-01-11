@@ -13,6 +13,7 @@ func main() {
         var sortby string
         var finished bool
         var prettyformat string
+        var filename string
 
         var cmdList = &cobra.Command{
             Use:   "list [keyword]",
@@ -20,7 +21,7 @@ func main() {
             Long:  `List is the most basic command that is used for listing tasks.
                     You can specify a keyword as well as other options.`,
             Run: func(cmd *cobra.Command, args []string) {
-                tasks := todotxt.LoadTaskList("todo.txt")
+                tasks := todotxt.LoadTaskList(filename)
 
                 if numtasks {
                     fmt.Println(tasks.Len())
@@ -54,7 +55,8 @@ func main() {
             },
         }
 
-
+        GotodoCmd.Flags().StringVarP(&filename, "filename", "", "todo.txt",
+                                     "Load tasks from this file.")
 
         GotodoCmd.AddCommand(cmdList)
         GotodoCmd.Execute()
