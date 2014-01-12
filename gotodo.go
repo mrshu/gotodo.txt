@@ -4,6 +4,8 @@ import  (
         "fmt"
         "../go-todotxt"
         "github.com/spf13/cobra"
+        "os/user"
+        "strings"
 )
 
 
@@ -21,6 +23,13 @@ func main() {
             Long:  `List is the most basic command that is used for listing tasks.
                     You can specify a keyword as well as other options.`,
             Run: func(cmd *cobra.Command, args []string) {
+                usr, err := user.Current()
+                if err != nil {
+                        panic(err);
+                }
+
+                filename = strings.Replace(filename, "~", usr.HomeDir, -1)
+
                 tasks := todotxt.LoadTaskList(filename)
 
                 if numtasks {
