@@ -70,7 +70,7 @@ func main() {
             },
         }
 
-        GotodoCmd.Flags().StringVarP(&filename, "filename", "", "todo.txt",
+        GotodoCmd.PersistentFlags().StringVarP(&filename, "filename", "", "todo.txt",
                                      "Load tasks from this file.")
 
         GotodoCmd.AddCommand(cmdList)
