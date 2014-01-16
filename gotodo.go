@@ -107,7 +107,7 @@ func main() {
 
                 taskid, err := strconv.Atoi(args[0])
                 if err != nil {
-                        fmt.Printf("Do you really consider %v a number?\n", err)
+                        fmt.Printf("Do you really consider that a number? %v\n", err)
                         return
                 }
 
