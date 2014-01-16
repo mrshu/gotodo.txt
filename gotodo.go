@@ -111,7 +111,11 @@ func main() {
                         return
                 }
 
-                tasks.Done(taskid)
+                err := tasks.Done(taskid)
+                if err != nil {
+                        fmt.Printf("There was an error %v\n", err)
+                }
+
                 tasks.Save(filename)
             },
         }
