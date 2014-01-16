@@ -8,6 +8,18 @@ import  (
         "strings"
 )
 
+func extendedLoader(filename string) (TaskList, error) {
+        usr, err := user.Current()
+        if err != nil {
+                return nil, err
+        }
+
+        filename = strings.Replace(filename, "~", usr.HomeDir, -1)
+        tasks := todotxt.LoadTaskList(filename)
+
+        return tasks, nil
+}
+
 
 func main() {
 
@@ -23,14 +35,10 @@ func main() {
             Long:  `List is the most basic command that is used for listing tasks.
                     You can specify a keyword as well as other options.`,
             Run: func(cmd *cobra.Command, args []string) {
-                usr, err := user.Current()
-                if err != nil {
-                        panic(err);
+                if tasks, err := extendedLoader(filename); err != nil {
+                        fmt.Println(err)
+                        return
                 }
-
-                filename = strings.Replace(filename, "~", usr.HomeDir, -1)
-
-                tasks := todotxt.LoadTaskList(filename)
 
                 if numtasks {
                     fmt.Println(tasks.Len())
@@ -66,14 +74,10 @@ func main() {
             Short: "Adds a task to the todo list.",
             Long:  `Adds a task to the todo list.`,
             Run: func(cmd *cobra.Command, args []string) {
-                usr, err := user.Current()
-                if err != nil {
-                        panic(err);
+                if tasks, err := extendedLoader(filename); err != nil {
+                        fmt.Println(err)
+                        return
                 }
-
-                filename = strings.Replace(filename, "~", usr.HomeDir, -1)
-
-                tasks := todotxt.LoadTaskList(filename)
 
                 task := strings.Join(args, " ")
                 tasks.Add(task)
@@ -81,6 +85,26 @@ func main() {
                 tasks.Save(filename)
             },
         }
+
+        var cmdDone = &cobra.Command{
+            Use:   "done [taskid]",
+            Short: "Marks task as done.",
+            Long:  `Marks task as done.`,
+            Run: func(cmd *cobra.Command, args []string) {
+                if tasks, err := extendedLoader(filename); err != nil {
+                        fmt.Println(err)
+                        return
+                }
+
+                task := strings.Join(args, " ")
+                tasks.Done(taskid)
+
+                tasks.Save(filename)
+            },
+        }
+
+
+
         var GotodoCmd = &cobra.Command{
             Use:   "gotodo",
             Short: "Gotodo is a go implementation of todo.txt.",
