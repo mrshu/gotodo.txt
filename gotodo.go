@@ -6,9 +6,10 @@ import  (
         "github.com/spf13/cobra"
         "os/user"
         "strings"
+        "strconv"
 )
 
-func extendedLoader(filename string) (TaskList, error) {
+func extendedLoader(filename string) (todotxt.TaskList, error) {
         usr, err := user.Current()
         if err != nil {
                 return nil, err
@@ -35,7 +36,8 @@ func main() {
             Long:  `List is the most basic command that is used for listing tasks.
                     You can specify a keyword as well as other options.`,
             Run: func(cmd *cobra.Command, args []string) {
-                if tasks, err := extendedLoader(filename); err != nil {
+                tasks, err := extendedLoader(filename)
+                if err != nil {
                         fmt.Println(err)
                         return
                 }
@@ -74,7 +76,8 @@ func main() {
             Short: "Adds a task to the todo list.",
             Long:  `Adds a task to the todo list.`,
             Run: func(cmd *cobra.Command, args []string) {
-                if tasks, err := extendedLoader(filename); err != nil {
+                tasks, err := extendedLoader(filename)
+                if err != nil {
                         fmt.Println(err)
                         return
                 }
@@ -91,14 +94,24 @@ func main() {
             Short: "Marks task as done.",
             Long:  `Marks task as done.`,
             Run: func(cmd *cobra.Command, args []string) {
-                if tasks, err := extendedLoader(filename); err != nil {
+                tasks, err := extendedLoader(filename)
+                if err != nil {
                         fmt.Println(err)
                         return
                 }
 
-                task := strings.Join(args, " ")
-                tasks.Done(taskid)
+                if len(args) < 1 {
+                        fmt.Println("So what needs to be done?")
+                        return
+                }
 
+                taskid, err := strconv.Atoi(args[0])
+                if err != nil {
+                        fmt.Println("Do you really consider %v a number?", err)
+                        return
+                }
+
+                tasks.Done(taskid)
                 tasks.Save(filename)
             },
         }
@@ -119,5 +132,6 @@ func main() {
 
         GotodoCmd.AddCommand(cmdList)
         GotodoCmd.AddCommand(cmdAdd)
+        GotodoCmd.AddCommand(cmdDone)
         GotodoCmd.Execute()
 }
