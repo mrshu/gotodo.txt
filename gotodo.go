@@ -61,6 +61,26 @@ func main() {
         cmdList.Flags().StringVarP(&prettyformat, "pretty", "", "%i %p %t",
                                    "Pretty print tasks")
 
+        var cmdAdd = &cobra.Command{
+            Use:   "add [task]",
+            Short: "Adds a task to the todo list.",
+            Long:  `Adds a task to the todo list.`,
+            Run: func(cmd *cobra.Command, args []string) {
+                usr, err := user.Current()
+                if err != nil {
+                        panic(err);
+                }
+
+                filename = strings.Replace(filename, "~", usr.HomeDir, -1)
+
+                tasks := todotxt.LoadTaskList(filename)
+
+                task := strings.Join(args, " ")
+                tasks.Add(task)
+
+                tasks.Save(filename)
+            },
+        }
         var GotodoCmd = &cobra.Command{
             Use:   "gotodo",
             Short: "Gotodo is a go implementation of todo.txt.",
@@ -74,5 +94,6 @@ func main() {
                                      "Load tasks from this file.")
 
         GotodoCmd.AddCommand(cmdList)
+        GotodoCmd.AddCommand(cmdAdd)
         GotodoCmd.Execute()
 }
