@@ -56,7 +56,7 @@ func main() {
                     }
 
                     for _, task := range filteredTasks {
-                            task.SetIdPaddingBy(filteredTasks)
+                            task.SetIdPaddingBy(tasks)
                             fmt.Println(task.PrettyPrint(prettyformat))
                     }
                 }
@@ -89,6 +89,7 @@ func main() {
             },
         }
 
+        var nofinishdate bool
         var cmdDone = &cobra.Command{
             Use:   "done [taskid]",
             Short: "Marks task as done.",
@@ -111,7 +112,7 @@ func main() {
                         return
                 }
 
-                err = tasks.Done(taskid)
+                err = tasks.Done(taskid, !nofinishdate)
                 if err != nil {
                         fmt.Printf("There was an error %v\n", err)
                 }
@@ -119,6 +120,8 @@ func main() {
                 tasks.Save(filename)
             },
         }
+        cmdDone.Flags().BoolVarP(&nofinishdate, "no-finish-date", "D", false,
+                                        "Do not mark finished tasks with date.")
 
 
 
