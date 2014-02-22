@@ -124,6 +124,7 @@ func main() {
 
 
         var editprio string
+        var edittodo string
         var cmdEdit = &cobra.Command{
             Use:   "edit [taskid]",
             Short: "Edits given task.",
@@ -151,12 +152,21 @@ func main() {
                         tasks[taskid].RebuildRawTodo()
                 }
 
+                if len(edittodo) > 0 {
+                        tasks[taskid].SetTodo(edittodo)
+                        tasks[taskid].RebuildRawTodo()
+                }
+
                 tasks.Save(filename)
             },
         }
 
         cmdEdit.PersistentFlags().StringVarP(&editprio, "priority", "p", "",
                                      "Sets task's priority.")
+        cmdEdit.PersistentFlags().StringVarP(&edittodo, "todo", "t", "",
+                                     "Edit task's todo.")
+
+
 
 
         var GotodoCmd = &cobra.Command{
