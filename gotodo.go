@@ -148,6 +148,7 @@ func main() {
 
                 if len(editprio) > 0 {
                         tasks[taskid].priority = editprio[0]
+                        tasks[taskid].RebuildRawTodo()
                 }
 
                 tasks.Save(filename)
