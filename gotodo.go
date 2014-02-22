@@ -123,6 +123,34 @@ func main() {
                                         "Do not mark finished tasks with date.")
 
 
+        var editprio string
+        var cmdEdit = &cobra.Command{
+            Use:   "edit [taskid]",
+            Short: "Edits given task.",
+            Long:  `Edits given task.`,
+            Run: func(cmd *cobra.Command, args []string) {
+                tasks, err := extendedLoader(filename)
+                if err != nil {
+                        fmt.Println(err)
+                        return
+                }
+
+                if len(args) < 1 {
+                        fmt.Println("So what do you want to edit?")
+                        return
+                }
+
+                taskid, err := strconv.Atoi(args[0])
+                if err != nil {
+                        fmt.Printf("Do you really consider that a number? %v\n", err)
+                        return
+                }
+
+
+
+                tasks.Save(filename)
+            },
+        }
 
         var GotodoCmd = &cobra.Command{
             Use:   "gotodo",
