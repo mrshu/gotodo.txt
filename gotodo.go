@@ -21,7 +21,6 @@ func extendedLoader(filename string) (todotxt.TaskList, error) {
         return tasks, nil
 }
 
-
 func main() {
 
         var numtasks bool
