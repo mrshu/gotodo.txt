@@ -174,5 +174,6 @@ func main() {
         GotodoCmd.AddCommand(cmdList)
         GotodoCmd.AddCommand(cmdAdd)
         GotodoCmd.AddCommand(cmdDone)
+        GotodoCmd.AddCommand(cmdEdit)
         GotodoCmd.Execute()
 }
