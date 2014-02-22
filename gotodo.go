@@ -166,9 +166,6 @@ func main() {
         cmdEdit.PersistentFlags().StringVarP(&edittodo, "todo", "t", "",
                                      "Edit task's todo.")
 
-
-
-
         var GotodoCmd = &cobra.Command{
             Use:   "gotodo",
             Short: "Gotodo is a go implementation of todo.txt.",
