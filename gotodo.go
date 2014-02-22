@@ -146,11 +146,17 @@ func main() {
                         return
                 }
 
-
+                if len(editprio) > 0 {
+                        tasks[taskid].priority = editprio[0]
+                }
 
                 tasks.Save(filename)
             },
         }
+
+        cmdEdit.PersistentFlags().StringVarP(&editprio, "priority", "p", "",
+                                     "Sets task's priority.")
+
 
         var GotodoCmd = &cobra.Command{
             Use:   "gotodo",
