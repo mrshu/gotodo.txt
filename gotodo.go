@@ -66,7 +66,7 @@ func main() {
         cmdList.Flags().BoolVarP(&finished, "finished", "f", false,
                                  "Show finished tasks")
         cmdList.Flags().StringVarP(&sortby, "sort", "s", "prio",
-                                   "Sort tasks by parameter (prio|date|len|prio-rev|date-rev|len-rev|id)")
+                                   "Sort tasks by parameter (prio|date|len|prio-rev|date-rev|len-rev|id|rand)")
         cmdList.Flags().StringVarP(&prettyformat, "pretty", "", "%i %p %t",
                                    "Pretty print tasks")
 
