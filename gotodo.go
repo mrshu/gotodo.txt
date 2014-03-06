@@ -122,6 +122,32 @@ func main() {
         cmdDone.Flags().BoolVarP(&nofinishdate, "no-finish-date", "D", false,
                                         "Do not mark finished tasks with date.")
 
+        var cmdArchive = &cobra.Command{
+            Use:   "archive [taskid]",
+            Short: "Archives task.",
+            Long:  `Archives task.`,
+            Run: func(cmd *cobra.Command, args []string) {
+                tasks, err := extendedLoader(filename)
+                if err != nil {
+                        fmt.Println(err)
+                        return
+                }
+
+                if len(args) < 1 {
+                        fmt.Println("So what needs to be done?")
+                        return
+                }
+
+                taskid, err := strconv.Atoi(args[0])
+                if err != nil {
+                        fmt.Printf("Do you really consider that a number? %v\n", err)
+                        return
+                }
+
+                tasks.Save(filename)
+            },
+        }
+
 
         var editprio string
         var edittodo string
@@ -181,6 +207,7 @@ func main() {
         GotodoCmd.AddCommand(cmdList)
         GotodoCmd.AddCommand(cmdAdd)
         GotodoCmd.AddCommand(cmdDone)
+        GotodoCmd.AddCommand(cmdArchive)
         GotodoCmd.AddCommand(cmdEdit)
         GotodoCmd.Execute()
 }
