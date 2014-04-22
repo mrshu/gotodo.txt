@@ -8,6 +8,7 @@ import  (
         "strings"
         "strconv"
         "github.com/rakyll/globalconf"
+        "flag"
 )
 
 func extendedLoader(filename string) (todotxt.TaskList, error) {
@@ -24,13 +25,15 @@ func extendedLoader(filename string) (todotxt.TaskList, error) {
 
 func main() {
 
-        globalconf.New("gotodo")
+        conf, _ := globalconf.New("gotodo")
 
         var numtasks bool
         var sortby string
         var finished bool
         var prettyformat string
         var filename string
+
+        var flagFilename = flag.String("file", "", "Location of the todo.txt file.")
 
         var cmdList = &cobra.Command{
             Use:   "list [keyword]",
@@ -147,6 +150,8 @@ func main() {
                         return
                 }
 
+                fmt.Printf("Archiving task %v\n", taskid)
+
                 tasks.Save(filename)
             },
         }
@@ -204,8 +209,20 @@ func main() {
             },
         }
 
-        GotodoCmd.PersistentFlags().StringVarP(&filename, "filename", "", "todo.txt",
+        GotodoCmd.PersistentFlags().StringVarP(&filename, "filename", "f", "",
                                      "Load tasks from this file.")
+
+        conf.ParseAll()
+
+        // sadly, this is the best we can do right now
+        if filename == "" {
+                fmt.Println(*flagFilename)
+                if *flagFilename == "" {
+                        filename = "todo.txt"
+                } else {
+                        filename = *flagFilename
+                }
+        }
 
         GotodoCmd.AddCommand(cmdList)
         GotodoCmd.AddCommand(cmdAdd)
