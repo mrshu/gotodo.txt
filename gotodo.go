@@ -35,6 +35,15 @@ func main() {
 
         var flagFilename = flag.String("file", "", "Location of the todo.txt file.")
 
+        var cmdConfig = &cobra.Command{
+            Use:   "config [key] [value]",
+            Short: "Show and sets config values",
+            Long:  `Config can be used to see and also set configuration variables.`,
+            Run: func(cmd *cobra.Command, args []string) {
+                fmt.Printf("%v\n", args)
+            },
+        }
+
         var cmdList = &cobra.Command{
             Use:   "list [keyword]",
             Short: "Lists tasks that contain keyword, if any",
@@ -229,5 +238,6 @@ func main() {
         GotodoCmd.AddCommand(cmdDone)
         GotodoCmd.AddCommand(cmdArchive)
         GotodoCmd.AddCommand(cmdEdit)
+        GotodoCmd.AddCommand(cmdConfig)
         GotodoCmd.Execute()
 }
