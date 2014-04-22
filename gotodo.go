@@ -7,6 +7,7 @@ import  (
         "os/user"
         "strings"
         "strconv"
+        "github.com/rakyll/globalconf"
 )
 
 func extendedLoader(filename string) (todotxt.TaskList, error) {
@@ -22,6 +23,8 @@ func extendedLoader(filename string) (todotxt.TaskList, error) {
 }
 
 func main() {
+
+        globalconf.New("gotodo")
 
         var numtasks bool
         var sortby string
