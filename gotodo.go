@@ -218,7 +218,7 @@ func main() {
             },
         }
 
-        GotodoCmd.PersistentFlags().StringVarP(&filename, "filename", "f", "",
+        GotodoCmd.PersistentFlags().StringVarP(&filename, "filename", "", "",
                                      "Load tasks from this file.")
 
         conf.ParseAll()
