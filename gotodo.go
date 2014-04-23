@@ -225,7 +225,6 @@ func main() {
 
         // sadly, this is the best we can do right now
         if filename == "" {
-                fmt.Println(*flagFilename)
                 if *flagFilename == "" {
                         filename = "todo.txt"
                 } else {
