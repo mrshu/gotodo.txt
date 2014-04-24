@@ -58,6 +58,15 @@ func main() {
                                     os.Exit(1)
                             }
                     }
+                    if len(args) == 2 {
+                            _, exists := flags[args[0]]
+                            if exists {
+                                    f := &flag.Flag{Name: args[0], Value: args[1]}
+                                    conf.Set("", f)
+                            } else {
+                                    os.Exit(1)
+                            }
+                    }
             },
         }
 
