@@ -2,6 +2,7 @@ package main
 
 import  (
         "fmt"
+        "os"
         "../go-todotxt"
         "github.com/spf13/cobra"
         "os/user"
@@ -35,12 +36,22 @@ func main() {
 
         var flagFilename = flag.String("file", "", "Location of the todo.txt file.")
 
+        var flags = make(map[string]string)
+
         var cmdConfig = &cobra.Command{
             Use:   "config [key] [value]",
             Short: "Show and sets config values",
             Long:  `Config can be used to see and also set configuration variables.`,
             Run: func(cmd *cobra.Command, args []string) {
-                fmt.Printf("%v\n", args)
+                    if len(args) == 1 {
+                            val, exists := flags[args[0]]
+                            if exists {
+                                    fmt.Printf("%s\n", val)
+                            } else {
+                                    // otherwise exit with non-zero status
+                                    os.Exit(1)
+                            }
+                    }
             },
         }
 
@@ -222,6 +233,9 @@ func main() {
                                      "Load tasks from this file.")
 
         conf.ParseAll()
+
+        // values here
+        flags["file"] = *flagFilename
 
         // sadly, this is the best we can do right now
         if filename == "" {
