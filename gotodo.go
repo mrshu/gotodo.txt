@@ -24,6 +24,24 @@ func extendedLoader(filename string) (todotxt.TaskList, error) {
         return tasks, nil
 }
 
+type flagValue struct {
+        str string
+}
+
+func (f *flagValue) String() string {
+        return f.str
+}
+
+func (f *flagValue) Set(value string) error {
+        f.str = value
+        return nil
+}
+
+func newFlagValue(val string) *flagValue {
+        return &flagValue{str: val}
+}
+
+
 func main() {
 
         conf, _ := globalconf.New("gotodo")
@@ -33,6 +51,7 @@ func main() {
         var finished bool
         var prettyformat string
         var filename string
+
 
         var flagFilename = flag.String("file", "", "Location of the todo.txt file.")
 
@@ -61,7 +80,7 @@ func main() {
                     if len(args) == 2 {
                             _, exists := flags[args[0]]
                             if exists {
-                                    f := &flag.Flag{Name: args[0], Value: args[1]}
+                                    f := &flag.Flag{Name: args[0], Value: newFlagValue(args[1])}
                                     conf.Set("", f)
                             } else {
                                     os.Exit(1)
