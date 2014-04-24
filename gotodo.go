@@ -43,6 +43,12 @@ func main() {
             Short: "Show and sets config values",
             Long:  `Config can be used to see and also set configuration variables.`,
             Run: func(cmd *cobra.Command, args []string) {
+                    if len(args) == 0{
+                            fmt.Printf("Available config variables:\n\n")
+                            for k := range flags {
+                                    fmt.Printf("%s\n", k)
+                            }
+                    }
                     if len(args) == 1 {
                             val, exists := flags[args[0]]
                             if exists {
