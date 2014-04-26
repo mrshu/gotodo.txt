@@ -10,6 +10,7 @@ import  (
         "strconv"
         "github.com/rakyll/globalconf"
         "flag"
+        "regexp"
 )
 
 func extendedLoader(filename string) (todotxt.TaskList, error) {
@@ -110,7 +111,14 @@ func main() {
                     for _, task := range tasks {
                         if (!task.Finished() && !finished) ||
                            (task.Finished() && finished) {
-                           filteredTasks = append(filteredTasks, task)
+                           if (len(args) > 0) {
+                                   match, _ := regexp.MatchString(args[0], task.Text())
+                                   if match {
+                                           filteredTasks = append(filteredTasks, task)
+                                   }
+                           } else {
+                                   filteredTasks = append(filteredTasks, task)
+                           }
                         }
                     }
 
