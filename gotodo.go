@@ -11,6 +11,7 @@ import  (
         "github.com/rakyll/globalconf"
         "flag"
         "regexp"
+        "os/exec"
 )
 
 func extendedLoader(filename string) (todotxt.TaskList, error) {
@@ -251,6 +252,11 @@ func main() {
                 if len(edittodo) > 0 {
                         tasks[taskid].SetTodo(edittodo)
                         tasks[taskid].RebuildRawTodo()
+                }
+
+                if len(edittodo) == 0 && len(editprio) == 0 {
+                        // FIXME: nost just vim
+                        out, err := exec.Command("vim", filename).Output()
                 }
 
                 tasks.Save(filename)
