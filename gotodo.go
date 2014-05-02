@@ -11,7 +11,8 @@ import  (
         "github.com/rakyll/globalconf"
         "flag"
         "regexp"
-        //"os/exec"
+        "os/exec"
+        "io/ioutil"
 )
 
 func extendedLoader(filename string) (todotxt.TaskList, error) {
@@ -263,6 +264,57 @@ func main() {
             },
         }
 
+        var cmdEdit = &cobra.Command{
+            Use:   "edit [taskid]",
+            Short: "Edit given task",
+            Long:  `Edit given task with your prefered editor.`,
+            Run: func(cmd *cobra.Command, args []string) {
+                tasks, err := extendedLoader(filename)
+                if err != nil {
+                        fmt.Println(err)
+                        return
+                }
+
+                if len(args) < 1 {
+                        fmt.Println("So what do you want to edit?")
+                        return
+                }
+
+                taskid, err := strconv.Atoi(args[0])
+                if err != nil {
+                        fmt.Printf("Do you really consider that a number? %v\n", err)
+                        return
+                }
+
+                text := tasks[taskid].RawText()
+
+                file, err := ioutil.TempFile(os.TempDir(), "gotodo")
+                defer os.Remove(file.Name())
+
+                if err != nil {
+                        panic(err)
+                }
+
+                e := ioutil.WriteFile(file.Name(), []byte(text), 0644)
+                if e != nil {
+                        panic(e)
+                }
+
+                exec.Command("vim", file.Name()).Output()
+
+                dat, err := ioutil.ReadFile(file.Name())
+                if err != nil {
+                        panic(err)
+                }
+
+                tasks[taskid].SetTodo(string(dat))
+                tasks[taskid].RebuildRawTodo()
+
+                tasks.Save(filename)
+            },
+        }
+
+
         cmdSet.PersistentFlags().StringVarP(&setprio, "priority", "p", "",
                                      "Sets task's priority.")
         cmdSet.PersistentFlags().StringVarP(&settodo, "todo", "t", "",
@@ -299,6 +351,7 @@ func main() {
         GotodoCmd.AddCommand(cmdDone)
         GotodoCmd.AddCommand(cmdArchive)
         GotodoCmd.AddCommand(cmdSet)
+        GotodoCmd.AddCommand(cmdEdit)
         GotodoCmd.AddCommand(cmdConfig)
         GotodoCmd.Execute()
 }
