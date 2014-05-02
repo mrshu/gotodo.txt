@@ -300,7 +300,12 @@ func main() {
                         panic(e)
                 }
 
-                c := exec.Command("vim", file.Name())
+                editor := os.Getenv("EDITOR")
+                if len(editor) == 0 {
+                        editor = "nano" //FIXME: saner default?
+                }
+
+                c := exec.Command(editor, file.Name())
 
                 // nasty hack, see http://stackoverflow.com/a/12089980
                 c.Stdin = os.Stdin
