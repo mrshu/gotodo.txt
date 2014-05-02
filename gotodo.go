@@ -300,15 +300,27 @@ func main() {
                         panic(e)
                 }
 
-                exec.Command("vim", file.Name()).Output()
+                c := exec.Command("vim", file.Name())
+
+                // nasty hack, see http://stackoverflow.com/a/12089980
+                c.Stdin = os.Stdin
+                c.Stdout = os.Stdout
+                c.Stderr = os.Stderr
+
+                er := c.Run()
+
+                if er != nil {
+                        fmt.Println(er.Error())
+                        panic(er)
+                }
 
                 dat, err := ioutil.ReadFile(file.Name())
                 if err != nil {
                         panic(err)
                 }
 
-                tasks[taskid].SetTodo(string(dat))
-                tasks[taskid].RebuildRawTodo()
+                // FIXME: take just the first line
+                tasks[taskid] = todotxt.ParseTask(strings.TrimSpace(string(dat)), taskid)
 
                 tasks.Save(filename)
             },
