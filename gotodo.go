@@ -319,8 +319,11 @@ func main() {
                         panic(err)
                 }
 
-                // FIXME: take just the first line
-                tasks[taskid] = todotxt.ParseTask(strings.TrimSpace(string(dat)), taskid)
+                lines := strings.Split(string(dat), "\n")
+                if len (lines) > 0 {
+                        tasks[taskid] = todotxt.ParseTask(lines[0], taskid)
+                        fmt.Printf("Task %d updated to:\n%s\n", taskid, lines[0])
+                }
 
                 tasks.Save(filename)
             },
