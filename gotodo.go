@@ -255,11 +255,6 @@ func main() {
                         tasks[taskid].RebuildRawTodo()
                 }
 
-              //if len(edittodo) == 0 && len(editprio) == 0 {
-              //        // FIXME: nost just vim
-              //        out, err := exec.Command("vim", filename).Output()
-              //}
-
                 tasks.Save(filename)
             },
         }
