@@ -321,8 +321,10 @@ func main() {
 
                 lines := strings.Split(string(dat), "\n")
                 if len (lines) > 0 {
-                        tasks[taskid] = todotxt.ParseTask(lines[0], taskid)
-                        fmt.Printf("Task %d updated to:\n%s\n", taskid, lines[0])
+                        if tasks[taskid].RawText() != lines[0] {
+                                tasks[taskid] = todotxt.ParseTask(lines[0], taskid)
+                                fmt.Printf("Task %d updated to:\n%s\n", taskid, lines[0])
+                        }
                 }
 
                 tasks.Save(filename)
