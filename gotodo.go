@@ -54,6 +54,7 @@ func main() {
         var finished bool
         var prettyformat string
         var filename string
+        var no_color bool
 
 
         var flagFilename = flag.String("file", "", "Location of the todo.txt file.")
@@ -109,6 +110,10 @@ func main() {
                 } else {
                     tasks.Sort(sortby)
 
+                    if no_color {
+                        prettyformat = "%i %p %t%r"
+                    }
+
                     var filteredTasks todotxt.TaskList
                     for _, task := range tasks {
                         if (!task.Finished() && !finished) ||
@@ -137,8 +142,10 @@ func main() {
                                  "Show finished tasks")
         cmdList.Flags().StringVarP(&sortby, "sort", "s", "prio",
                                    "Sort tasks by parameter (prio|date|len|prio-rev|date-rev|len-rev|id|rand)")
-        cmdList.Flags().StringVarP(&prettyformat, "pretty", "", "%i %c %p %t%r",
+        cmdList.Flags().StringVarP(&prettyformat, "pretty", "", "%i%c %p %t%r",
                                    "Pretty print tasks")
+        cmdList.Flags().BoolVarP(&no_color, "no-color", "c", false,
+                                 "Do not use colored output when pretty-printing")
 
         var cmdAdd = &cobra.Command{
             Use:   "add [task]",
