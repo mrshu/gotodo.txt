@@ -158,6 +158,11 @@ func main() {
                         return
                 }
 
+                if len(args) == 0 {
+                        fmt.Println("No task to be added.")
+                        return
+                }
+
                 task := strings.Join(args, " ")
                 tasks.Add(task)
 
