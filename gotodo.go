@@ -10,7 +10,6 @@ import  (
         "strconv"
         "github.com/rakyll/globalconf"
         "flag"
-        "regexp"
         "os/exec"
         "io/ioutil"
 )
@@ -119,8 +118,7 @@ func main() {
                         if (!task.Finished() && !finished) ||
                            (task.Finished() && finished) {
                            if (len(args) > 0) {
-                                   match, _ := regexp.MatchString(args[0], task.Text())
-                                   if match {
+                                   if task.Matches(strings.Join(args, " ")) {
                                            filteredTasks = append(filteredTasks, task)
                                    }
                            } else {
