@@ -54,6 +54,7 @@ func main() {
         var prettyformat string
         var filename string
         var no_color bool
+        var prio_only bool
 
 
         var flagFilename = flag.String("file", "", "Location of the todo.txt file.")
@@ -115,9 +116,9 @@ func main() {
 
                     var filteredTasks todotxt.TaskList
                     for _, task := range tasks {
-                        if (!task.Finished() && !finished) ||
-                           (task.Finished() && finished) {
-                           if (len(args) > 0) {
+                        if (task.Finished() == finished) &&
+                           ((task.Priority() != '^') || prio_only != true) {
+                           if (len(args) > 1) {
                                    if task.Matches(strings.Join(args, " ")) {
                                            filteredTasks = append(filteredTasks, task)
                                    }
@@ -144,6 +145,9 @@ func main() {
                                    "Pretty print tasks")
         cmdList.Flags().BoolVarP(&no_color, "no-color", "c", false,
                                  "Do not use colored output when pretty-printing")
+        cmdList.Flags().BoolVarP(&prio_only, "prio-only", "p", false,
+                                 "Only list tasks with some priority (i.e. not '^')")
+
 
         var cmdAdd = &cobra.Command{
             Use:   "add [task]",
